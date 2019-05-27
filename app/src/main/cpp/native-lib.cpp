@@ -1,10 +1,11 @@
 #include <jni.h>
 #include <string>
+#include "Lib_stub.h"
 
 extern "C" {
 
-extern void hs_init(int * argc, char ** argv[]);
-extern char* hello(void);
+extern void hs_init(int *argc, char **argv[]);
+extern char *hello(void);
 
 JNIEXPORT void
 JNICALL
@@ -22,5 +23,14 @@ Java_com_zw3rk_helloworld_MainActivity_stringFromJNI(
         jobject /* this */) {
     return env->NewStringUTF(hello());
 }
+
+/*JNIEXPORT jstring
+JNICALL
+Java_com_zw3rk_helloworld_MainActivity_stringFromJNI(
+        JNIEnv* env,
+jobject *//* this *//*) {
+std::string hello = "Hello from C++";
+return env->NewStringUTF(hello.c_str());
+}*/
 
 }
