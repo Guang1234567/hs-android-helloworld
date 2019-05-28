@@ -5,19 +5,32 @@
 
 cmake_minimum_required(VERSION 3.4.1)
 
+
+set(MY_LD_FLAGS "-Wall -v -fPIC")
+
+if (ANDROID_ABI STREQUAL "x86_64")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${MY_LD_FLAGS} -Wl,--no-warn-shared-textrel")
+elseif (ANDROID_ABI STREQUAL "x86")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${MY_LD_FLAGS} -Wl,--no-warn-shared-textrel")
+elseif (ANDROID_ABI STREQUAL "armeabi-v7a")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${MY_LD_FLAGS} -Wl,--no-warn-shared-textrel")
+else ()
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${MY_LD_FLAGS}")
+endif ()
+
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
 # You can define multiple libraries, and CMake builds them for you.
 # Gradle automatically packages shared libraries with your APK.
 
 add_library( # Sets the name of the library.
-             native-lib
+        native-lib
 
-             # Sets the library as a shared library.
-             SHARED
+        # Sets the library as a shared library.
+        SHARED
 
-             # Provides a relative path to your source file(s).
-             src/main/cpp/native-lib.cpp )
+        # Provides a relative path to your source file(s).
+        src/main/cpp/native-lib.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -26,30 +39,53 @@ add_library( # Sets the name of the library.
 # completing its build.
 
 find_library( # Sets the name of the path variable.
-              log-lib
+        log-lib
 
-              # Specifies the name of the NDK library that
-              # you want CMake to locate.
-              log )
+        # Specifies the name of the NDK library that
+        # you want CMake to locate.
+        log)
 
-find_library( c-lib
-              c )
+find_library(c-lib
+        c)
 
-find_library( hs-lib
-            hs
-            PATHS ${PROJECT_SOURCE_DIR}/hs-libs/${ANDROID_ABI}
-            NO_CMAKE_FIND_ROOT_PATH )
+#[[find_library(hs-lib
+        hs
+        PATHS ${PROJECT_SOURCE_DIR}/hs-libs/${ANDROID_ABI}
+        NO_CMAKE_FIND_ROOT_PATH)]]
+
+add_library(hs SHARED IMPORTED)
+set_target_properties(hs
+        PROPERTIES
+        IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/hs-libs/${ANDROID_ABI}/libhs.so)
 
 # Specifies libraries CMake should link to your target library. You
 # can link multiple libraries, such as libraries you define in this
 # build script, prebuilt third-party libraries, or system libraries.
 
-target_link_libraries( # Specifies the target library.
-                       native-lib
+add_library(iconv SHARED IMPORTED)
+set_target_properties(iconv
+        PROPERTIES
+        IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/pre-build-libs/libiconv_prefix/${ANDROID_ABI}/lib/libiconv.so)
 
-                       # Links the target library to the log library
-                       # included in the NDK.
-                       ${log-lib}
-                       ${c-lib}
-                       ${hs-lib}
-                       )
+add_library(charset SHARED IMPORTED)
+set_target_properties(charset
+        PROPERTIES
+        IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/pre-build-libs/libiconv_prefix/${ANDROID_ABI}/lib/libcharset.so)
+
+target_include_directories(native-lib PRIVATE
+        ./src/main/hs
+        /Users/lihanguang/Library/Caches/com.github.rikvdkleij.intellij-haskell/lts-13/programs/x86_64-osx/ghc-8.6.5/lib/ghc-8.6.5/include
+        ${PROJECT_SOURCE_DIR}/pre-build-libs/libiconv_prefix/${ANDROID_ABI}/include)
+
+target_link_libraries( # Specifies the target library.
+        native-lib
+
+        # Links the target library to the log library
+        # included in the NDK.
+        ${log-lib}
+        ${c-lib}
+        hs
+        iconv
+        charset
+        stdc++
+        )

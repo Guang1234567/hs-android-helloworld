@@ -154,3 +154,7 @@ app/hs-libs
 arm64-v8a
 armeabi-v7a
 /**/hs/*_stub.h
+
+*.o
+*.hi
+.idea
