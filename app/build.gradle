@@ -6,18 +6,19 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.zw3rk.helloworld"
-        minSdkVersion 21
+        minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
-                cppFlags ""
+                arguments "-DANDROID_PLATFORM=android-16"
+                cppFlags "-v -fPIC"
             }
         }
         ndk {
-            abiFilters 'armeabi-v7a', 'arm64-v8a'/*, "x86" "x86_64"*/
+            abiFilters 'armeabi-v7a' /*,'arm64-v8a', "x86" "x86_64"*/
         }
     }
     buildTypes {
@@ -29,6 +30,12 @@ android {
     externalNativeBuild {
         cmake {
             path "CMakeLists.txt"
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs 'hs-libs'
         }
     }
 }

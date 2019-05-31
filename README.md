@@ -20,23 +20,23 @@ export PATH=$LLVM_HOME/bin:$HOME/dev_kit/haskell/ghc-8.4.0.20180109-aarch64-linu
 ## build libhs.a
 
 ```bash
-armv7-linux-androideabi-ghc -fPIC \
-  -L./pre-build-libs/libiconv_prefix/arm-linux-androideabi/lib \
+  armv7-linux-androideabi-ghc -fPIC \
+  -L$HOME/dev_kit/haskell/ghc-build-scripts/dist/libiconv_prefix/armeabi-v7a/lib \
   -staticlib -liconv -lcharset \
-  -o /Users/XXXXX/dev_kit/src_code/hs-android-helloworld/app/hs-libs/armeabi-v7a/libhs.a \
+  -o ./hs-libs/armeabi-v7a/libhs.a \
   ./src/main/hs/Lib.hs
   
   
   aarch64-linux-android-ghc -fPIC \
-  -L./pre-build-libs/libiconv_prefix/aarch64-linux-android/lib \
+  -L./pre-build-libs/libiconv_prefix/arm64-v8a/lib \
   -staticlib -liconv -lcharset \
-  -o /Users/XXXXX/dev_kit/src_code/hs-android-helloworld/app/hs-libs/arm64-v8a/libhs.a \
+  -o $HOME/dev_kit/src_code/hs-android-helloworld/app/hs-libs/arm64-v8a/libhs.a \
   ./src/main/hs/Lib.hs
   
   x86_64-linux-android-ghc -fPIC \
   -L./pre-build-libs/libiconv_prefix/x86_64/lib \
   -staticlib -liconv -lcharset \
-  -o /Users/XXXXX/dev_kit/src_code/hs-android-helloworld/app/hs-libs/x86_64/libhs.a \
+  -o $HOME/dev_kit/src_code/hs-android-helloworld/app/hs-libs/x86_64/libhs.a \
   ./src/main/hs/Lib.hs
 ```
 

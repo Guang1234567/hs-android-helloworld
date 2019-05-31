@@ -6,7 +6,7 @@
 cmake_minimum_required(VERSION 3.4.1)
 
 
-set(MY_LD_FLAGS "-Wall -v -fPIC")
+set(MY_LD_FLAGS "-Wall -v -fPIC -Wl,-Bsymbolic")
 
 if (ANDROID_ABI STREQUAL "x86_64")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${MY_LD_FLAGS} -Wl,--no-warn-shared-textrel")
@@ -67,9 +67,10 @@ set_target_properties(lib_charset
         PROPERTIES
         IMPORTED_LOCATION /Users/lihanguang/dev_kit/haskell/ghc-build-scripts/dist/libiconv_prefix/${ANDROID_ABI}/lib/libcharset.a)
 
+
 target_include_directories(native-lib PRIVATE
         ./src/main/hs
-        /Users/lihanguang/Library/Caches/com.github.rikvdkleij.intellij-haskell/lts-13/programs/x86_64-osx/ghc-8.6.5/lib/ghc-8.6.5/include
+        /Users/lihanguang/dev_kit/haskell/ghc-8.6.5-20190531-armv7-linux-androideabi/lib/armv7-linux-androideabi-ghc-8.6.5/include
         /Users/lihanguang/dev_kit/haskell/ghc-build-scripts/dist/libiconv_prefix/${ANDROID_ABI}/include)
 
 target_link_libraries( # Specifies the target library.

@@ -9,4 +9,4 @@ foreign export ccall "hello" chello :: IO CString
 chello = newCString hello
 
 -- | Pristine haskell function.
-hello = "Hello from Haskell"
+hello = "Hello from Haskell, ghc-v8.6.5 minSupportAPI=16"
