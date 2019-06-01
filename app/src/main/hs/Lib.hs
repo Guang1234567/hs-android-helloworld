@@ -9,4 +9,4 @@ foreign export ccall "hello" chello :: IO CString
 chello = newCString hello
 
 -- | Pristine haskell function.
-hello = "Hello from Haskell"
+hello = "Hello from Haskell shareLib by ghc-armv7-android ndk14 supportApi=16"

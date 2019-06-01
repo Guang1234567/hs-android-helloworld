@@ -65,16 +65,21 @@ set_target_properties(hs
 add_library(iconv SHARED IMPORTED)
 set_target_properties(iconv
         PROPERTIES
-        IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/pre-build-libs/libiconv_prefix/${ANDROID_ABI}/lib/libiconv.so)
+        IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/hs-libs/${ANDROID_ABI}/libiconv.so)
 
 add_library(charset SHARED IMPORTED)
 set_target_properties(charset
         PROPERTIES
-        IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/pre-build-libs/libiconv_prefix/${ANDROID_ABI}/lib/libcharset.so)
+        IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/hs-libs/${ANDROID_ABI}/libcharset.so)
+
+add_library(ffi SHARED IMPORTED)
+set_target_properties(ffi
+        PROPERTIES
+        IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/hs-libs/${ANDROID_ABI}/libffi.so)
 
 target_include_directories(native-lib PRIVATE
         ./src/main/hs
-        /Users/lihanguang/Library/Caches/com.github.rikvdkleij.intellij-haskell/lts-13/programs/x86_64-osx/ghc-8.6.5/lib/ghc-8.6.5/include
+        ${HOME}/dev_kit/haskell/ghc-8.6.5-20190531-armv7-linux-androideabi/lib/armv7-linux-androideabi-ghc-8.6.5/includeng/Library/Caches/com.github.rikvdkleij.intellij-haskell/lts-13/programs/x86_64-osx/ghc-8.6.5/lib/ghc-8.6.5/include
         ${PROJECT_SOURCE_DIR}/pre-build-libs/libiconv_prefix/${ANDROID_ABI}/include)
 
 target_link_libraries( # Specifies the target library.
@@ -87,5 +92,6 @@ target_link_libraries( # Specifies the target library.
         hs
         iconv
         charset
+        ffi
         stdc++
         )

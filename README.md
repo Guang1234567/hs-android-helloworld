@@ -25,12 +25,15 @@ Building `.so` is different from `.a`.  Because you must link the `-lHSrts-1.0 -
 They are here: `$HOME/dev_kit/haskell/ghc-8.4.0.20180109-armv7-linux-androideabi/lib/arm-linux-android-ghc-8.4.0.20180109/rts-1.0`
 
 ```bash
+  
+  # $HOME/dev_kit/haskell/ghc-8.6.5-20190531-armv7-linux-androideabi/bin/armv7-linux-androideabi-ghc
+  
   armv7-linux-androideabi-ghc -fPIC \
-      -I$HOME/dev_kit/haskell/ghc-8.4.0.20180109-armv7-linux-androideabi/lib/arm-linux-androideabi-ghc-8.4.0.20180109/rts-1.0/include \
-      -shared -liconv -lcharset -lHSrts-1.0 -lHSrts-1.0_thr -lCffi -lCffi_thr \
-      -L./pre-build-libs/libiconv_prefix/armeabi-v7a/lib \
+      -shared -liconv -lcharset -lffi -lHSrts -lHSrts_thr \
+      -I$HOME/dev_kit/haskell/ghc-8.6.5-20190531-armv7-linux-androideabi/lib/armv7-linux-androideabi-ghc-8.6.5/include \
+      -L./hs-libs/armeabi-v7a \
+      -L$HOME/dev_kit/haskell/ghc-8.6.5-20190531-armv7-linux-androideabi/lib/armv7-linux-androideabi-ghc-8.6.5/rts \
       -L$HOME/dev_kit/Android/sdk/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64/lib/gcc/arm-linux-androideabi/4.9.x \
-      -L$HOME/dev_kit/haskell/ghc-8.4.0.20180109-armv7-linux-androideabi/lib/arm-linux-androideabi-ghc-8.4.0.20180109/rts-1.0 \
       -o ./hs-libs/armeabi-v7a/libhs.so \
       ./src/main/hs/Lib.hs
   
