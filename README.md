@@ -33,7 +33,6 @@ They are here: `$HOME/dev_kit/haskell_sdk/ghc-8.6.5-20190531-armv7-linux-android
       -I$HOME/dev_kit/haskell_sdk/ghc-build-scripts/dist/libffi-prefix/armv7-linux-androideabi/include \
       -I$HOME/dev_kit/haskell_sdk/ghc-8.6.5-20190531-armv7-linux-androideabi/lib/armv7-linux-androideabi-ghc-8.6.5/include \
       -L./hs-libs/armeabi-v7a \
-      -L$HOME/dev_kit/haskell_sdk/ghc-8.6.5-20190531-armv7-linux-androideabi/lib/armv7-linux-androideabi-ghc-8.6.5/rts \
       -L$HOME/dev_kit/Android/sdk/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64/lib/gcc/arm-linux-androideabi/4.9.x \
       -o ./hs-libs/armeabi-v7a/libhs.so \
       ./src/main/hs/Lib.hs
@@ -41,10 +40,11 @@ They are here: `$HOME/dev_kit/haskell_sdk/ghc-8.6.5-20190531-armv7-linux-android
   
   aarch64-linux-android-ghc -fPIC \
   -I$HOME/dev_kit/haskell_sdk/ghc-build-scripts/dist/libffi-prefix/aarch64-linux-android/include \
-    -shared -liconv -lcharset -lffi -lHSrts -lHSrts_thr \
+    -shared -liconv -lcharset -lffi -lHSrts -lHSrts_thr -lHSdirectory-1.3.3.0 \
     -L./hs-libs/arm64-v8a \
     -L$HOME/dev_kit/Android/sdk/ndk-bundle/toolchains/aarch64-linux-android-4.9/prebuilt/darwin-x86_64/lib/gcc/aarch64-linux-android/4.9.x \
-    -L$HOME/dev_kit/haskell_sdk/ghc-8.6.5-20190531-aarch64-linux-android/lib/aarch64-linux-android-ghc-8.6.5-20190531/rts \
+    -L$HOME/dev_kit/haskell_sdk/ghc-8.6.5-20190531-aarch64-linux-android/lib/aarch64-linux-android-ghc-8.6.5/rts \
+    -L$HOME/dev_kit/haskell_sdk/ghc-8.6.5-20190531-aarch64-linux-android/lib/aarch64-linux-android-ghc-8.6.5/directory-1.3.3.0 \
     -o ./hs-libs/arm64-v8a/libhs.so \
     ./src/main/hs/Lib.hs
   
@@ -53,7 +53,7 @@ They are here: `$HOME/dev_kit/haskell_sdk/ghc-8.6.5-20190531-armv7-linux-android
       -shared -liconv -lcharset -lffi -lHSrts -lHSrts_thr \
       -L./hs-libs/x86_64 \
       -L$HOME/dev_kit/Android/sdk/ndk-bundle/toolchains/x86_64-linux-android-4.9/prebuilt/darwin-x86_64/lib/gcc/x86_64-linux-android/4.9.x \
-      -L$HOME/dev_kit/haskell_sdk/ghc-8.6.5-20190531-x86_64-linux-android/lib/x86_64-linux-android-ghc-8.6.5-20190531/rts \
+      -L$HOME/dev_kit/haskell_sdk/ghc-8.6.5-20190531-x86_64-linux-android/lib/x86_64-linux-android-ghc-8.6.5/rts \
       -o ./hs-libs/x86_64/libhs.so \
       ./src/main/hs/Lib.hs
 ```
