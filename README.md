@@ -1,3 +1,11 @@
+#Change Log
+
+2019-06-24
+
+- using `cabal` to build `libhs`.  [README](https://github.com/Guang1234567/learn-haskell)
+
+-----
+
 # How to run?
 
 ## download the cross compile and llvm and toolchain-wrapper
