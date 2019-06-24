@@ -14,11 +14,11 @@ android {
         externalNativeBuild {
             cmake {
                 arguments "-DANDROID_PLATFORM=android-16"
-                cppFlags "-v -fPIC"
+                cppFlags "-fPIC"
             }
         }
         ndk {
-            abiFilters 'armeabi-v7a' /*,'arm64-v8a', "x86" "x86_64"*/
+            abiFilters /*'armeabi-v7a',*/'arm64-v8a'/*, "x86" "x86_64"*/
         }
     }
     buildTypes {

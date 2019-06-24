@@ -28,9 +28,9 @@ export PATH=$LLVM_HOME/bin:$HOME/dev_kit/haskell/ghc-8.4.0.20180109-aarch64-linu
   
   
   aarch64-linux-android-ghc -fPIC \
-  -L./pre-build-libs/libiconv_prefix/arm64-v8a/lib \
+  -L/$HOME/dev_kit/haskell_sdk/ghc-build-scripts/dist/libiconv_prefix/aarch64-linux-android/lib \
   -staticlib -liconv -lcharset \
-  -o $HOME/dev_kit/src_code/hs-android-helloworld/app/hs-libs/arm64-v8a/libhs.a \
+  -o ./hs-libs/arm64-v8a/libhs.a \
   ./src/main/hs/Lib.hs
   
   x86_64-linux-android-ghc -fPIC \

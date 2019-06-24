@@ -7,15 +7,19 @@ cmake_minimum_required(VERSION 3.4.1)
 
 
 set(MY_LD_FLAGS "-Wall -v -fPIC -Wl,-Bsymbolic")
+set(ALIAS_0_ANDROID_ABI "aarch64-linux-android")
+set(ALIAS_1_ANDROID_ABI "aarch64-android")
 
 if (ANDROID_ABI STREQUAL "x86_64")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${MY_LD_FLAGS} -Wl,--no-warn-shared-textrel")
-elseif (ANDROID_ABI STREQUAL "x86")
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${MY_LD_FLAGS} -Wl,--no-warn-shared-textrel")
+    set(ALIAS_0_ANDROID_ABI "x86_64-linux-android")
+    set(ALIAS_1_ANDROID_ABI "x86_64-android")
 elseif (ANDROID_ABI STREQUAL "armeabi-v7a")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${MY_LD_FLAGS} -Wl,--no-warn-shared-textrel")
+    set(ALIAS_0_ANDROID_ABI "armv7-linux-androideabi")
+    set(ALIAS_1_ANDROID_ABI "arm-android")
 else ()
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${MY_LD_FLAGS}")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${MY_LD_FLAGS} -v")
 endif ()
 
 # Creates and names a library, sets it as either STATIC
@@ -48,10 +52,13 @@ find_library( # Sets the name of the path variable.
 find_library(c-lib
         c)
 
-find_library(hs-lib
-        hs
-        PATHS ${PROJECT_SOURCE_DIR}/hs-libs/${ANDROID_ABI}
-        NO_CMAKE_FIND_ROOT_PATH)
+find_library(z-lib
+        z)
+
+add_library(lib_hs STATIC IMPORTED)
+set_target_properties(lib_hs
+        PROPERTIES
+        IMPORTED_LOCATION $ENV{HOME}/dev_kit/src_code/haskell_code/learn-haskell/dist-newstyle/build/${ALIAS_1_ANDROID_ABI}/ghc-8.6.5/learn-haskell-0.1.0.0/build/libHSlearn-haskell-0.1.0.0-inplace-ghc8.6.5.a)
 
 # Specifies libraries CMake should link to your target library. You
 # can link multiple libraries, such as libraries you define in this
@@ -60,18 +67,18 @@ find_library(hs-lib
 add_library(lib_iconv STATIC IMPORTED)
 set_target_properties(lib_iconv
         PROPERTIES
-        IMPORTED_LOCATION /Users/lihanguang/dev_kit/haskell/ghc-build-scripts/dist/libiconv_prefix/${ANDROID_ABI}/lib/libiconv.a)
+        IMPORTED_LOCATION $ENV{HOME}/dev_kit/haskell_sdk/ghc-build-scripts/dist/libiconv_prefix/${ALIAS_0_ANDROID_ABI}/lib/libiconv.a)
 
 add_library(lib_charset STATIC IMPORTED)
 set_target_properties(lib_charset
         PROPERTIES
-        IMPORTED_LOCATION /Users/lihanguang/dev_kit/haskell/ghc-build-scripts/dist/libiconv_prefix/${ANDROID_ABI}/lib/libcharset.a)
+        IMPORTED_LOCATION $ENV{HOME}/dev_kit/haskell_sdk/ghc-build-scripts/dist/libiconv_prefix/${ALIAS_0_ANDROID_ABI}/lib/libcharset.a)
 
 
 target_include_directories(native-lib PRIVATE
         ./src/main/hs
-        /Users/lihanguang/dev_kit/haskell/ghc-8.6.5-20190531-armv7-linux-androideabi/lib/armv7-linux-androideabi-ghc-8.6.5/include
-        /Users/lihanguang/dev_kit/haskell/ghc-build-scripts/dist/libiconv_prefix/${ANDROID_ABI}/include)
+        $ENV{HOME}/dev_kit/haskell_sdk/ghc-8.6.5-20190531-${ALIAS_0_ANDROID_ABI}/lib/${ALIAS_0_ANDROID_ABI}-ghc-8.6.5/include
+        $ENV{HOME}/dev_kit/haskell_sdk/ghc-build-scripts/dist/libiconv_prefix/${ALIAS_0_ANDROID_ABI}/include)
 
 target_link_libraries( # Specifies the target library.
         native-lib
@@ -80,7 +87,8 @@ target_link_libraries( # Specifies the target library.
         # included in the NDK.
         ${log-lib}
         ${c-lib}
-        ${hs-lib}
+        ${z-lib}
+        lib_hs
         lib_iconv
         lib_charset
         stdc++
