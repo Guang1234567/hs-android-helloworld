@@ -60,15 +60,11 @@ find_library(z-lib
         PATHS ${PROJECT_SOURCE_DIR}/hs-libs/${ANDROID_ABI}
         NO_CMAKE_FIND_ROOT_PATH)]]
 
-add_library(lib_hs SHARED IMPORTED)
+add_library(lib_hs STATIC IMPORTED)
 set_target_properties(lib_hs
         PROPERTIES
-        IMPORTED_LOCATION $ENV{HOME}/dev_kit/src_code/haskell_code/learn-haskell/dist-newstyle/build/${ALIAS_1_ANDROID_ABI}/ghc-8.6.5/learn-haskell-0.1.0.0/build/libHSlearn-haskell-0.1.0.0-inplace-ghc8.6.5.so)
+        IMPORTED_LOCATION $ENV{HOME}/dev_kit/src_code/haskell_code/learn-haskell/dist-newstyle/build/${ALIAS_1_ANDROID_ABI}/ghc-8.6.5/learn-haskell-0.1.0.0/build/libHSlearn-haskell-0.1.0.0-inplace-ghc8.6.5.a)
 
-add_library(lib_HSrts-ghc8.6.5 SHARED IMPORTED)
-set_target_properties(lib_HSrts-ghc8.6.5
-        PROPERTIES
-        IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/hs-libs/${ANDROID_ABI}/libHSrts-ghc8.6.5.so)
 
 # Specifies libraries CMake should link to your target library. You
 # can link multiple libraries, such as libraries you define in this
@@ -102,7 +98,6 @@ target_link_libraries( # Specifies the target library.
         ${log-lib}
         ${c-lib}
         ${z-lib}
-        lib_HSrts-ghc8.6.5
         lib_hs
         lib_iconv
         lib_charset
