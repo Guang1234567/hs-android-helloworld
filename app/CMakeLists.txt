@@ -6,16 +6,20 @@
 cmake_minimum_required(VERSION 3.4.1)
 
 
-set(MY_LD_FLAGS "-Wall -v -fPIC")
+set(MY_LD_FLAGS "-Wall -v -fPIC -Wl,-Bsymbolic")
+set(ALIAS_0_ANDROID_ABI "aarch64-linux-android")
+set(ALIAS_1_ANDROID_ABI "aarch64-android")
 
 if (ANDROID_ABI STREQUAL "x86_64")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${MY_LD_FLAGS} -Wl,--no-warn-shared-textrel")
-elseif (ANDROID_ABI STREQUAL "x86")
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${MY_LD_FLAGS} -Wl,--no-warn-shared-textrel")
+    set(ALIAS_0_ANDROID_ABI "x86_64-linux-android")
+    set(ALIAS_1_ANDROID_ABI "x86_64-android")
 elseif (ANDROID_ABI STREQUAL "armeabi-v7a")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${MY_LD_FLAGS} -Wl,--no-warn-shared-textrel")
+    set(ALIAS_0_ANDROID_ABI "armv7-linux-androideabi")
+    set(ALIAS_1_ANDROID_ABI "arm-android")
 else ()
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${MY_LD_FLAGS}")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${MY_LD_FLAGS} -v")
 endif ()
 
 # Creates and names a library, sets it as either STATIC
@@ -48,32 +52,40 @@ find_library( # Sets the name of the path variable.
 find_library(c-lib
         c)
 
+find_library(z-lib
+        z)
+
 #[[find_library(hs-lib
         hs
         PATHS ${PROJECT_SOURCE_DIR}/hs-libs/${ANDROID_ABI}
         NO_CMAKE_FIND_ROOT_PATH)]]
 
-add_library(hs SHARED IMPORTED)
-set_target_properties(hs
+add_library(lib_hs SHARED IMPORTED)
+set_target_properties(lib_hs
         PROPERTIES
-        IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/hs-libs/${ANDROID_ABI}/libhs.so)
+        IMPORTED_LOCATION $ENV{HOME}/dev_kit/src_code/haskell_code/learn-haskell/dist-newstyle/build/${ALIAS_1_ANDROID_ABI}/ghc-8.6.5/learn-haskell-0.1.0.0/build/libHSlearn-haskell-0.1.0.0-inplace-ghc8.6.5.so)
+
+add_library(lib_HSrts-ghc8.6.5 SHARED IMPORTED)
+set_target_properties(lib_HSrts-ghc8.6.5
+        PROPERTIES
+        IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/hs-libs/${ANDROID_ABI}/libHSrts-ghc8.6.5.so)
 
 # Specifies libraries CMake should link to your target library. You
 # can link multiple libraries, such as libraries you define in this
 # build script, prebuilt third-party libraries, or system libraries.
 
-add_library(iconv SHARED IMPORTED)
-set_target_properties(iconv
+add_library(lib_iconv SHARED IMPORTED)
+set_target_properties(lib_iconv
         PROPERTIES
         IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/hs-libs/${ANDROID_ABI}/libiconv.so)
 
-add_library(charset SHARED IMPORTED)
-set_target_properties(charset
+add_library(lib_charset SHARED IMPORTED)
+set_target_properties(lib_charset
         PROPERTIES
         IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/hs-libs/${ANDROID_ABI}/libcharset.so)
 
-add_library(ffi SHARED IMPORTED)
-set_target_properties(ffi
+add_library(lib_ffi SHARED IMPORTED)
+set_target_properties(lib_ffi
         PROPERTIES
         IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/hs-libs/${ANDROID_ABI}/libffi.so)
 
@@ -89,9 +101,11 @@ target_link_libraries( # Specifies the target library.
         # included in the NDK.
         ${log-lib}
         ${c-lib}
-        hs
-        iconv
-        charset
-        ffi
+        ${z-lib}
+        lib_HSrts-ghc8.6.5
+        lib_hs
+        lib_iconv
+        lib_charset
+        lib_ffi
         stdc++
         )
