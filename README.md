@@ -1,3 +1,12 @@
+#Change Log
+
+2019-06-24
+
+- using `cabal` to build `libhs`.  [README](https://github.com/Guang1234567/learn-haskell)
+
+-----
+
+
 # How to run?
 
 I build this project on osx. No experencise in ubuntu or windows.

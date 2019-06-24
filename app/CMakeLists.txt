@@ -66,6 +66,12 @@ set_target_properties(lib_hs
         IMPORTED_LOCATION $ENV{HOME}/dev_kit/src_code/haskell_code/learn-haskell/dist-newstyle/build/${ALIAS_1_ANDROID_ABI}/ghc-8.6.5/learn-haskell-0.1.0.0/build/libHSlearn-haskell-0.1.0.0-inplace-ghc8.6.5.a)
 
 
+add_library(lib_hs2 STATIC IMPORTED)
+set_target_properties(lib_hs2
+        PROPERTIES
+        IMPORTED_LOCATION $ENV{HOME}/dev_kit/src_code/haskell_code/file-magic-checker/dist-newstyle/build/${ALIAS_1_ANDROID_ABI}/ghc-8.6.5/file-magic-checker-0.1.0.0/build/libHSfile-magic-checker-0.1.0.0-inplace-ghc8.6.5.a)
+
+
 # Specifies libraries CMake should link to your target library. You
 # can link multiple libraries, such as libraries you define in this
 # build script, prebuilt third-party libraries, or system libraries.
@@ -99,6 +105,7 @@ target_link_libraries( # Specifies the target library.
         ${c-lib}
         ${z-lib}
         lib_hs
+        lib_hs2
         lib_iconv
         lib_charset
         lib_ffi
