@@ -13,8 +13,6 @@ import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-external fun initHS()
-
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +28,7 @@ class MainActivity : AppCompatActivity() {
                     // will emit 2 Permission objects
                     if (permission.granted) {
                         // `permission.name` is granted !
-                        Toast.makeText(this@MainActivity, "已成功授予所有权限!", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this@MainActivity, "已成功授予所有权限!", Toast.LENGTH_SHORT).show()
                         doSthAfterAllPermissionGranted()
                     } else if (permission.shouldShowRequestPermissionRationale) {
                         // Denied permission without ask never again
@@ -39,20 +37,24 @@ class MainActivity : AppCompatActivity() {
                         // Need to go to the settings
                     }
                 })
-
-        doSthAfterAllPermissionGranted()
     }
 
     private fun doSthAfterAllPermissionGranted() {
         // Example of a call to a native method
         val tv = findViewById(R.id.sample_text) as TextView
-        tv.text = stringFromJNI()
 
         Handler(Looper.getMainLooper()).postDelayed(
                 {
-                    Log.e("lhg", "-----------------1111")
+                    tv.text = stringFromJNI()
+                    Log.e("lhg", "--------- begin --------isElfFileFromJNI")
                     Log.w("lhg", "${isElfFileFromJNI("/sdcard/jl.txt")}")
-                    Log.e("lhg", "-----------------2222")
+                    Log.w("lhg1", "${matchesGlobFromJNI("foo.c", "f??.c")}")
+                    Log.w("lhg2", "${matchesGlobFromJNI("test.c", "t[ea]s*")}")
+                    Log.w("lhg3", "${matchesGlobFromJNI("taste.txt", "t[ea]s*")}")
+                    Log.w("lhg4", "${namesMatchingJNI("/sdcard/*.txt").joinToString()}}")
+                    Log.e("lhg", "---------- end --------isElfFileFromJNI")
+
+                    doSthAfterAllPermissionGranted()
                 }
                 , 2000)
     }
@@ -65,12 +67,7 @@ class MainActivity : AppCompatActivity() {
 
     external fun isElfFileFromJNI(path: String): Boolean
 
-    companion object {
+    external fun matchesGlobFromJNI(name: String, glob: String): Boolean
 
-        // Used to load the 'native-lib' library on application startup.
-        init {
-            System.loadLibrary("native-lib")
-            initHS()
-        }
-    }
+    external fun namesMatchingJNI(path: String): Array<String>
 }

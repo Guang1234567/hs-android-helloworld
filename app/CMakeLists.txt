@@ -69,7 +69,7 @@ set_target_properties(lib_hs
 add_library(lib_hs2 STATIC IMPORTED)
 set_target_properties(lib_hs2
         PROPERTIES
-        IMPORTED_LOCATION $ENV{HOME}/dev_kit/src_code/haskell_code/file-magic-checker/dist-newstyle/build/${ALIAS_1_ANDROID_ABI}/ghc-8.6.5/file-magic-checker-0.1.0.0/build/libHSfile-magic-checker-0.1.0.0-inplace-ghc8.6.5.a)
+        IMPORTED_LOCATION $ENV{HOME}/dev_kit/src_code/haskell_code/android-hs-mobile-common/dist-newstyle/build/${ALIAS_1_ANDROID_ABI}/ghc-8.6.5/android-hs-mobile-common-0.1.0.0/build/libHSandroid-hs-mobile-common-0.1.0.0-inplace-ghc8.6.5.a)
 
 
 # Specifies libraries CMake should link to your target library. You
@@ -92,9 +92,10 @@ set_target_properties(lib_ffi
         IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/hs-libs/${ANDROID_ABI}/libffi.so)
 
 target_include_directories(native-lib PRIVATE
+        $ENV{HOME}/dev_kit/haskell_sdk/ghc-8.6.5-20190531-${ALIAS_0_ANDROID_ABI}/lib/${ALIAS_0_ANDROID_ABI}-ghc-8.6.5/include
+        $ENV{HOME}/dev_kit/src_code/haskell_code/android-hs-mobile-common/dist-newstyle/build/${ALIAS_1_ANDROID_ABI}/ghc-8.6.5/android-hs-mobile-common-0.1.0.0/build/Android
         ./src/main/hs
-        ${HOME}/dev_kit/haskell/ghc-8.6.5-20190531-armv7-linux-androideabi/lib/armv7-linux-androideabi-ghc-8.6.5/includeng/Library/Caches/com.github.rikvdkleij.intellij-haskell/lts-13/programs/x86_64-osx/ghc-8.6.5/lib/ghc-8.6.5/include
-        ${PROJECT_SOURCE_DIR}/pre-build-libs/libiconv_prefix/${ANDROID_ABI}/include)
+        )
 
 target_link_libraries( # Specifies the target library.
         native-lib
